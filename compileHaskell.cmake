@@ -32,10 +32,10 @@ function(add_haskell_library target_name header_dir)
   add_dependencies(${target_name} "${target_name}_target")
 
   # specify where the library is, where the import lib is and where to find the headers
-set_target_properties(${target_name}
+  set_target_properties(${target_name}
     PROPERTIES
     IMPORTED_LOCATION ${library_file}
-    IMPORTED_IMPLIB ${library_link_file})
-  #INTERFACE_INCLUDE_DIRECTORIES ${header_dir})
+    IMPORTED_IMPLIB ${library_link_file}
+    INTERFACE_INCLUDE_DIRECTORIES ${header_dir} ${HASKELL_INCLUDE_DIR})
 
 endfunction()
