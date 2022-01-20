@@ -7,15 +7,20 @@
 
 # Ensure FindHaskell is run and GHC has been found (or make a custom target ;))
 # Windows only atm
-function(add_haskell_library target_name header_dir)
+function(add_haskell_library target_name header_name)
   list(LENGTH ARGN num_source_files)
   if(num_source_files LESS 1)
     message(FATAL_ERROR "No SOURCES given to target: ${target_name}")
   endif()
   set(library_file "${CMAKE_CURRENT_BINARY_DIR}/${target_name}.dll")
   set(library_link_file "${CMAKE_CURRENT_BINARY_DIR}/${target_name}.dll.a")
+
+  set(include_dir "${CMAKE_CURRENT_BINARY_DIR}/include")
+  set(header_dir "${include_dir}/${header_name}")
   
-  # if
+  # if....Don't think i need to check tbh
+  file(MAKE_DIRECTORY ${header_dir})
+
   
   add_custom_command(OUTPUT ${library_file} ${library_link_file}
                      COMMAND ${HASKELL_EXECUTABLE} 
@@ -36,6 +41,6 @@ function(add_haskell_library target_name header_dir)
     PROPERTIES
     IMPORTED_LOCATION ${library_file}
     IMPORTED_IMPLIB ${library_link_file}
-    INTERFACE_INCLUDE_DIRECTORIES ${header_dir} ${HASKELL_INCLUDE_DIR})
+    INTERFACE_INCLUDE_DIRECTORIES "${include_dir};${HASKELL_INCLUDE_DIR}")
 
 endfunction()
